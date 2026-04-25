@@ -1,0 +1,28 @@
+# Executáveis
+*.exe
+*.out
+*.app
+*.elf
+
+# Arquivos de objeto (Object files)
+*.o
+*.obj
+
+# Bibliotecas estáticas e dinâmicas
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+
+# Arquivos de depuração e mapeamento
+*.dSYM/
+*.su
+*.idb
+*.pdb
+*.map
+
+# Makefile temporários
+Makefile.old
+
+trabalho1/t1
