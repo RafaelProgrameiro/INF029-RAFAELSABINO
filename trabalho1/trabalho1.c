@@ -99,47 +99,72 @@ int teste(int a)
 //     printf("%d\n", q1(str) == 0);
 //     strcpy(str, "/9/2014");
 //     printf("%d\n", q1(str) == 0);
+// int q1(char data[])
+// {
+//   int datavalida = 1;
+//   int dia, mes, ano;
+//   int bissexto = 1;
+
+//   sscanf(data, "%d/%d/%d", &dia, &mes, &ano);  
+
+//   if (ano % 4 == 0)
+//   {
+//     if (ano % 100 == 0)
+//     {
+//       if (ano % 400 == 0)
+//         bissexto = 1;
+//       else
+//         bissexto = 0;
+//     }
+//     else
+//       bissexto = 1;
+//   }
+//   else
+//     bissexto = 0;
+
+//   if (dia <= 0 || dia > 31)
+//     datavalida = 0;
+
+//   if (mes <= 0 || mes > 12)
+//     datavalida = 0;
+
+//   if (mes == 2 && !bissexto && dia > 28)
+//     datavalida = 0;
+
+//   if (mes == 2 && bissexto && dia > 29)
+//     datavalida = 0;
+
+//   if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30)
+//     datavalida = 0;
+
+//   if(ano < 0)
+//     datavalida = 0;
+
+//   if (datavalida)
+//     return 1;
+//   else
+//     return 0;
+// }
+
 int q1(char data[])
 {
   int datavalida = 1;
   int dia, mes, ano;
-  int bissexto = 1;
 
-  sscanf(data, "%d/%d/%d", &dia, &mes, &ano);  
+  sscanf(data, "%d/%d/%d", &dia, &mes, &ano);
 
-  if (ano % 4 == 0)
-  {
-    if (ano % 100 == 0)
-    {
-      if (ano % 400 == 0)
-        bissexto = 1;
-      else
-        bissexto = 0;
-    }
-    else
-      bissexto = 1;
-  }
-  else
-    bissexto = 0;
+  int bissexto = (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0));       
 
-  if (dia <= 0 || dia > 31)
+  if 
+  (
+    dia <= 0 || dia > 31 ||
+    mes <= 0 || mes > 12 ||
+    mes == 2 && !bissexto && dia > 28 ||
+    mes == 2 && bissexto && dia > 29 ||
+    (mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30
+  )
     datavalida = 0;
-
-  if (mes <= 0 || mes > 12)
-    datavalida = 0;
-
-  if (mes == 2 && !bissexto && dia > 28)
-    datavalida = 0;
-
-  if (mes == 2 && bissexto && dia > 29)
-    datavalida = 0;
-
-  if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30)
-    datavalida = 0;
-
-  if (ano < 1900 && ano > 2026)
-    datavalida = 0;  
-
+    
   if (datavalida)
     return 1;
   else
@@ -165,6 +190,8 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
 
   // calcule os dados e armazene nas três variáveis a seguir
   DiasMesesAnos dma;
+  DataQuebrada dataInicialQuebrado;
+  DataQuebrada dataFinalQuebrado;
 
   if (q1(datainicial) == 0)
   {
@@ -178,10 +205,70 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
   }
   else
   {
+    int valido = 1;
+    sscanf(datainicial, "%d/%d/%d", &dataInicialQuebrado.iDia, &dataInicialQuebrado.iMes, &dataInicialQuebrado.iAno);
+    dataInicialQuebrado.valido = valido;
+
+    if (dataInicialQuebrado.iAno < 100)
+      dataInicialQuebrado.iAno += 2000;
+
+    sscanf(datafinal, "%d/%d/%d", &dataFinalQuebrado.iDia, &dataFinalQuebrado.iMes, &dataFinalQuebrado.iAno);
+    dataFinalQuebrado.valido = valido;
+
+    if (dataFinalQuebrado.iAno < 100)
+      dataFinalQuebrado.iAno += 2000;
+
     // verifique se a data final não é menor que a data inicial
+    if 
+    (
+      dataFinalQuebrado.iAno < dataInicialQuebrado.iAno ||
+      (dataFinalQuebrado.iAno == dataInicialQuebrado.iAno && dataFinalQuebrado.iMes < dataInicialQuebrado.iMes) ||
+      (dataFinalQuebrado.iAno == dataInicialQuebrado.iAno && dataFinalQuebrado.iMes == dataInicialQuebrado.iMes && dataFinalQuebrado.iDia < dataInicialQuebrado.iDia)
+    )
+    {
+      dma.retorno = 4;
+      return dma;
+    }
 
-    // calcule a distancia entre as datas
+    // calcule a distancia entre as datas    
+    dma.qtdDias = dataFinalQuebrado.iDia - dataInicialQuebrado.iDia;
+    dma.qtdMeses = dataFinalQuebrado.iMes - dataInicialQuebrado.iMes;
+    dma.qtdAnos = dataFinalQuebrado.iAno - dataInicialQuebrado.iAno;
 
+    if (dma.qtdDias < 0)
+    {
+      dma.qtdMeses--;
+
+      int mesAnterior = dataFinalQuebrado.iMes - 1;
+      int anoAux = dataFinalQuebrado.iAno;
+
+      if (mesAnterior == 0)
+      {
+        mesAnterior = 12;
+        anoAux--;
+      }
+
+      int diasMes = 31;
+
+      if (mesAnterior == 2)
+      {
+        int bissexto = (anoAux % 4 == 0 && (anoAux % 100 != 0 || anoAux % 400 == 0));
+        diasMes = bissexto ? 29 : 28;
+      }
+      else if (mesAnterior == 4 || mesAnterior == 6 || mesAnterior == 9 || mesAnterior == 11)
+      {
+        diasMes = 30;
+      }      
+
+      dma.qtdDias += diasMes;
+    }
+
+    if (dma.qtdMeses < 0)
+    {
+      dma.qtdMeses += 12;
+      dma.qtdAnos--;
+    }
+    
     // se tudo der certo
     dma.retorno = 1;
     return dma;
