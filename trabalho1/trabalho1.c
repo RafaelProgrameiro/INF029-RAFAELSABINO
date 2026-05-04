@@ -89,69 +89,46 @@ int teste(int a)
     Não utilizar funções próprias de string (ex: strtok)
     pode utilizar strlen para pegar o tamanho da string
  */
-//     strcpy(str, "29/02/2015");
-//     printf("%d\n", q1(str) == 0);
-//     strcpy(str, "29/02/2012");
-//     printf("%d\n", q1(str) == 1);
-//     strcpy(str, "9/13/2014");
-//     printf("%d\n", q1(str) == 0);
-//     strcpy(str, "45/4/2014");
-//     printf("%d\n", q1(str) == 0);
-//     strcpy(str, "/9/2014");
-//     printf("%d\n", q1(str) == 0);
-// int q1(char data[])
-// {
-//   int datavalida = 1;
-//   int dia, mes, ano;
-//   int bissexto = 1;
-
-//   sscanf(data, "%d/%d/%d", &dia, &mes, &ano);  
-
-//   if (ano % 4 == 0)
-//   {
-//     if (ano % 100 == 0)
-//     {
-//       if (ano % 400 == 0)
-//         bissexto = 1;
-//       else
-//         bissexto = 0;
-//     }
-//     else
-//       bissexto = 1;
-//   }
-//   else
-//     bissexto = 0;
-
-//   if (dia <= 0 || dia > 31)
-//     datavalida = 0;
-
-//   if (mes <= 0 || mes > 12)
-//     datavalida = 0;
-
-//   if (mes == 2 && !bissexto && dia > 28)
-//     datavalida = 0;
-
-//   if (mes == 2 && bissexto && dia > 29)
-//     datavalida = 0;
-
-//   if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30)
-//     datavalida = 0;
-
-//   if(ano < 0)
-//     datavalida = 0;
-
-//   if (datavalida)
-//     return 1;
-//   else
-//     return 0;
-// }
 
 int q1(char data[])
 {
   int datavalida = 1;
-  int dia, mes, ano;
+  int dia = 0, mes = 0, ano = 0;
+
+  // int i = 0;
+  // while (data[i] >= '0' && data[i] <= '9')
+  // {
+  //   dia = dia * 10 + (data[i] - '0');
+  //   i++;
+  // }
+
+  // if (data[i] != '/')
+  //   return 0;
+  // i++;
+
+  // while (data[i] >= '0' && data[i] <= '9')
+  // {
+  //   mes = mes * 10 + (data[i] - '0');
+  //   i++;
+  // }
+
+  // if (data[i] != '/')
+  //   return 0;
+  // i++;
+
+  // while (data[i] >= '0' && data[i] <= '9')
+  // {
+  //   ano = ano * 10 + (data[i] - '0');
+  //   i++;
+  // }
 
   sscanf(data, "%d/%d/%d", &dia, &mes, &ano);
+  
+  if(ano < 0)
+    return 0;
+
+  if(ano < 100)
+    ano += 2000;
 
   int bissexto = (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0));       
 
@@ -287,7 +264,21 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-  int qtdOcorrencias = -1;
+  int qtdOcorrencias = 0;
+
+  while(*texto != '\0')
+  {
+    if(isCaseSensitive == 1)
+    {
+      if(*texto == c)
+        qtdOcorrencias++;
+    }
+    else
+      if(*texto == c || *texto == c + 32 || *texto == c - 32)
+        qtdOcorrencias++;    
+    
+    texto++;
+  }
 
   return qtdOcorrencias;
 }
