@@ -390,7 +390,45 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-  int qtdOcorrencias;
+  int qtdOcorrencias = 0;
+  char numero[5000];
+  int tamNumero = 0;
+  char busca[5000];
+  int tamBusca = 0;
+
+  while(numerobase > 0)
+  {
+    numero[tamNumero] = (numerobase % 10) + '0';
+    tamNumero++;
+    numerobase = numerobase / 10;
+  }
+
+  numero[tamNumero] = '\0';
+
+  while(numerobusca > 0)
+  {
+    busca[tamBusca] = (numerobusca % 10) + '0';
+    tamBusca++;
+    numerobusca = numerobusca / 10;
+  }
+
+  busca[tamBusca] = '\0';
+
+  for(int i = 0; i < tamNumero; i++)
+  {
+    int contador = 0;
+    for(int j = 0; j < tamBusca; j++)
+    {
+      if(numero[i + j] == busca[j])
+        contador++;      
+      else
+        break;
+    }
+
+    if(contador == tamBusca)
+      qtdOcorrencias++;
+  }
+ 
   return qtdOcorrencias;
 }
 
