@@ -356,7 +356,25 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
+  int negativo = 0;
+  int novoNumero = 0;
 
+  if(num < 0)
+  {
+    negativo = 1;
+    num = -num;
+  }
+  
+  while(num > 0)
+  {
+    novoNumero = (novoNumero * 10) + (num % 10);
+    num = num  / 10;
+  }  
+
+  if(negativo)
+    novoNumero = -novoNumero;
+
+  num = novoNumero;
   return num;
 }
 
