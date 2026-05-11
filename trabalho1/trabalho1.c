@@ -444,7 +444,128 @@ int q6(int numerobase, int numerobusca)
 
 int q7(char matriz[8][10], char palavra[5])
 {
-  int achou;
+  int achou = 0;
+
+  for (int i = 0; i < 8; i++)
+  {
+    for (int j = 0; j < 10; j++)
+    {
+      if (matriz[i][j] == palavra[0])
+      {
+        int contador = 0;
+        for (int k = 0; k < 5; k++)
+        {
+          if (j + k < 10 && matriz[i][j + k] == palavra[k])
+            contador++;
+          else
+            break;
+        }
+        if (contador == 5)
+        {
+          achou = 1;
+          return achou;
+        }
+
+        contador = 0;
+        for (int k = 0; k < 5; k++)
+        {
+          if (j - k >= 0 && matriz[i][j - k] == palavra[k])
+            contador++;
+          else
+            break;
+        }
+        if (contador == 5)
+        {
+          achou = 1;
+          return achou;
+        }
+
+        contador = 0;
+        for (int k = 0; k < 5; k++)
+        {
+          if (i + k < 8 && matriz[i + k][j] == palavra[k])
+            contador++;
+          else
+            break;
+        }
+        if (contador == 5)
+        {
+          achou = 1;
+          return achou;
+        }
+
+        contador = 0;
+        for (int k = 0; k < 5; k++)
+        {
+          if (i - k >= 0 && matriz[i - k][j] == palavra[k])
+            contador++;
+          else
+            break;
+        }
+        if (contador == 5)
+        {
+          achou = 1;
+          return achou;
+        }
+
+        contador = 0;
+        for (int k = 0; k < 5; k++)
+        {
+          if (i + k < 8 && j + k < 10 && matriz[i + k][j + k] == palavra[k])
+            contador++;
+          else
+            break;
+        }
+        if (contador == 5)
+        {
+          achou = 1;
+          return achou;
+        }
+
+        contador = 0;
+        for (int k = 0; k < 5; k++)
+        {
+          if (i + k < 8 && j - k >= 0 && matriz[i + k][j - k] == palavra[k])
+            contador++;
+          else
+            break;
+        }
+        if (contador == 5)
+        {
+          achou = 1;
+          return achou;
+        }
+
+        contador = 0;
+        for (int k = 0; k < 5; k++)
+        {
+          if (i - k >= 0 && j + k < 10 && matriz[i - k][j + k] == palavra[k])
+            contador++;
+          else
+            break;
+        }
+        if (contador == 5)
+        {
+          achou = 1;
+          return achou;
+        }
+        
+        contador = 0;
+        for (int k = 0; k < 5; k++)
+        {
+          if (i - k >= 0 && j - k >= 0 && matriz[i - k][j - k] == palavra[k])
+            contador++;
+          else
+            break;
+        }
+        if (contador == 5)
+        {
+          achou = 1;
+          return achou;
+        }
+      }
+    }
+  }
   return achou;
 }
 
