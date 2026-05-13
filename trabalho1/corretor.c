@@ -41,7 +41,6 @@ int main()
     testQ5();
     testQ6();
     testQ7();
-    //q8();
 }
 
 int ligado = 1;
