@@ -124,25 +124,23 @@ int q1(char data[])
   // }
 
   sscanf(data, "%d/%d/%d", &dia, &mes, &ano);
-  
-  if(ano < 0)
+
+  if (ano < 0)
     return 0;
 
-  if(ano < 100)
+  if (ano < 100)
     ano += 2000;
 
-  int bissexto = (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0));       
+  int bissexto = (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0));
 
-  if 
-  (
-    dia <= 0 || dia > 31 ||
-    mes <= 0 || mes > 12 ||
-    mes == 2 && !bissexto && dia > 28 ||
-    mes == 2 && bissexto && dia > 29 ||
-    (mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30
-  )
+  if (
+      dia <= 0 || dia > 31 ||
+      mes <= 0 || mes > 12 ||
+      mes == 2 && !bissexto && dia > 28 ||
+      mes == 2 && bissexto && dia > 29 ||
+      (mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30)
     datavalida = 0;
-    
+
   if (datavalida)
     return 1;
   else
@@ -197,18 +195,16 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
       dataFinalQuebrado.iAno += 2000;
 
     // verifique se a data final não é menor que a data inicial
-    if 
-    (
-      dataFinalQuebrado.iAno < dataInicialQuebrado.iAno ||
-      (dataFinalQuebrado.iAno == dataInicialQuebrado.iAno && dataFinalQuebrado.iMes < dataInicialQuebrado.iMes) ||
-      (dataFinalQuebrado.iAno == dataInicialQuebrado.iAno && dataFinalQuebrado.iMes == dataInicialQuebrado.iMes && dataFinalQuebrado.iDia < dataInicialQuebrado.iDia)
-    )
+    if (
+        dataFinalQuebrado.iAno < dataInicialQuebrado.iAno ||
+        (dataFinalQuebrado.iAno == dataInicialQuebrado.iAno && dataFinalQuebrado.iMes < dataInicialQuebrado.iMes) ||
+        (dataFinalQuebrado.iAno == dataInicialQuebrado.iAno && dataFinalQuebrado.iMes == dataInicialQuebrado.iMes && dataFinalQuebrado.iDia < dataInicialQuebrado.iDia))
     {
       dma.retorno = 4;
       return dma;
     }
 
-    // calcule a distancia entre as datas    
+    // calcule a distancia entre as datas
     dma.qtdDias = dataFinalQuebrado.iDia - dataInicialQuebrado.iDia;
     dma.qtdMeses = dataFinalQuebrado.iMes - dataInicialQuebrado.iMes;
     dma.qtdAnos = dataFinalQuebrado.iAno - dataInicialQuebrado.iAno;
@@ -236,7 +232,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
       else if (mesAnterior == 4 || mesAnterior == 6 || mesAnterior == 9 || mesAnterior == 11)
       {
         diasMes = 30;
-      }      
+      }
 
       dma.qtdDias += diasMes;
     }
@@ -246,7 +242,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
       dma.qtdMeses += 12;
       dma.qtdAnos--;
     }
-    
+
     // se tudo der certo
     dma.retorno = 1;
     return dma;
@@ -267,17 +263,16 @@ int q3(char *texto, char c, int isCaseSensitive)
 {
   int qtdOcorrencias = 0;
 
-  while(*texto != '\0')
+  while (*texto != '\0')
   {
-    if(isCaseSensitive == 1)
+    if (isCaseSensitive == 1)
     {
-      if(*texto == c)
+      if (*texto == c)
         qtdOcorrencias++;
     }
-    else
-      if(*texto == c || *texto == c + 32 || *texto == c - 32)
-        qtdOcorrencias++;    
-    
+    else if (*texto == c || *texto == c + 32 || *texto == c - 32)
+      qtdOcorrencias++;
+
     texto++;
   }
 
@@ -299,6 +294,7 @@ int q3(char *texto, char c, int isCaseSensitive)
         O retorno da função, n, nesse caso seria 1;
 
  */
+
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
   int qtdOcorrencias = 0;
@@ -312,37 +308,37 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
       tamanhoBuscaChar++;
   }
 
-  int posChar = 0;
-
   for(int i = 0; strTexto[i] != '\0'; i++)
   {
-    if((strTexto[i] & 0xC0) != 0x80)
-      posChar++;
-
     int contador = 0;
     for(int j = 0; strBusca[j] != '\0'; j++)
     {
       if(strTexto[i + j] == strBusca[j])
-      {
         contador++;        
-      }
       else
         break;
     }
     
     if(contador == tamanhoBusca)
-    {
+    {      
+      int posChar = 1;
+      for(int k = 0; k < i; k++)
+      {
+        if(((strTexto[k]) & 0xC0) != 0x80)
+          posChar++;
+      }
+      
       posicoes[posicao] = posChar;
       posicao++;
       posicoes[posicao] = posChar + tamanhoBuscaChar - 1;
       posicao++;
       qtdOcorrencias++;
-    }    
-  }
+      i += tamanhoBusca - 1;
+    }
+  }    
 
   return qtdOcorrencias;
 }
-
 
 /*
  Q5 = inverte número
@@ -359,19 +355,19 @@ int q5(int num)
   int negativo = 0;
   int novoNumero = 0;
 
-  if(num < 0)
+  if (num < 0)
   {
     negativo = 1;
     num = -num;
   }
-  
-  while(num > 0)
+
+  while (num > 0)
   {
     novoNumero = (novoNumero * 10) + (num % 10);
-    num = num  / 10;
-  }  
+    num = num / 10;
+  }
 
-  if(negativo)
+  if (negativo)
     novoNumero = -novoNumero;
 
   num = novoNumero;
@@ -387,7 +383,7 @@ int q5(int num)
  @saida
     Quantidade de vezes que número de busca ocorre em número base
  */
-
+// algo errado aqui
 int q6(int numerobase, int numerobusca)
 {
   int qtdOcorrencias = 0;
@@ -396,7 +392,7 @@ int q6(int numerobase, int numerobusca)
   char busca[5000];
   int tamBusca = 0;
 
-  while(numerobase > 0)
+  while (numerobase > 0)
   {
     numero[tamNumero] = (numerobase % 10) + '0';
     tamNumero++;
@@ -405,7 +401,7 @@ int q6(int numerobase, int numerobusca)
 
   numero[tamNumero] = '\0';
 
-  while(numerobusca > 0)
+  while (numerobusca > 0)
   {
     busca[tamBusca] = (numerobusca % 10) + '0';
     tamBusca++;
@@ -414,21 +410,24 @@ int q6(int numerobase, int numerobusca)
 
   busca[tamBusca] = '\0';
 
-  for(int i = 0; i < tamNumero; i++)
+  for (int i = 0; i < tamNumero; i++)
   {
     int contador = 0;
-    for(int j = 0; j < tamBusca; j++)
+    for (int j = 0; j < tamBusca; j++)
     {
-      if(numero[i + j] == busca[j])
-        contador++;      
+      if (numero[i + j] == busca[j])
+        contador++;
       else
         break;
     }
 
-    if(contador == tamBusca)
+    if (contador == tamBusca)
+    {
       qtdOcorrencias++;
+      i += tamBusca - 1;
+    }
   }
- 
+
   return qtdOcorrencias;
 }
 
@@ -549,7 +548,7 @@ int q7(char matriz[8][10], char palavra[5])
           achou = 1;
           return achou;
         }
-        
+
         contador = 0;
         for (int k = 0; k < 5; k++)
         {
