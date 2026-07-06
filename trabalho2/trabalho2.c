@@ -20,6 +20,11 @@ typedef struct Principal
 
 Principal vetorPrincipal[TAM];
 
+// typedef struct No{
+//   int valor;
+//   struct No *proximo;
+// } No;
+
 void ordenarValores(int vetor[], int qtd)
 {
   for (int i = 0; i < qtd - 1; i++)
@@ -376,19 +381,63 @@ Retorno (No*)
     NULL, caso não tenha nenhum número nas listas
     No*, ponteiro para o início da lista com cabeçote
 */
-// No *montarListaEncadeadaComCabecote()
-// {
+No *montarListaEncadeadaComCabecote()
+{
+  int qtdElementos = 0;
+  for(int i = 0; i < TAM; i++)  
+    if(vetorPrincipal[i].aux != NULL)
+      qtdElementos += vetorPrincipal[i].aux->qtdAtual;    
 
-//     return NULL;
-// }
+  if(qtdElementos == 0)
+    return NULL;
+  
+  No *inicio = malloc(sizeof(No));
+  if(inicio == NULL)
+    return NULL;
+
+  inicio->prox = NULL;
+
+  No *atual = inicio;
+
+  for(int i = 0; i < TAM; i++)
+  {
+    if(vetorPrincipal[i].aux != NULL)
+      for(int j = 0; j < vetorPrincipal[i].aux->qtdAtual; j++)
+      {
+        No * novoNo = malloc(sizeof(No));
+        if(novoNo == NULL)
+          return NULL;
+
+        novoNo->conteudo = vetorPrincipal[i].aux->numeros[j];
+        novoNo->prox = NULL;
+
+        atual->prox = novoNo;
+        atual = novoNo;
+      }
+  }
+  return inicio;
+}
 
 /*
 Objetivo: retorna os números da lista enceada com cabeçote armazenando em vetorAux.
 Retorno void
 */
-// void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
-// {
-// }
+void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
+{
+  if(inicio == NULL || inicio->prox == NULL)
+    return;
+
+  No *atual = inicio->prox;
+
+  int i = 0;
+
+  while(atual != NULL)
+  {
+    vetorAux[i] = atual->conteudo;
+    i++;
+    atual = atual->prox;
+  }
+}
 
 /*
 Objetivo: Destruir a lista encadeada com cabeçote a partir de início.
@@ -397,9 +446,24 @@ O ponteiro inicio deve ficar com NULL.
 Retorno
     void.
 */
-// void destruirListaEncadeadaComCabecote(No **inicio)
-// {
-// }
+void destruirListaEncadeadaComCabecote(No **inicio)
+{
+  if(inicio == NULL || *inicio == NULL)
+    return;
+
+  No *atual = *inicio;
+  No *proximoNo;
+
+  while(atual != NULL)
+  {
+    proximoNo = atual->prox;
+
+    free(atual);
+
+    atual = proximoNo;
+  }
+  *inicio = NULL;
+}
 
 /*
 Objetivo: inicializa o programa. deve ser chamado ao inicio do programa

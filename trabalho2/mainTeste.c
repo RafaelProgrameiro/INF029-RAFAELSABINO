@@ -13,7 +13,7 @@ void testeExcluirNumeroEspecifico();
 void testeListar();
 void testeRetornarTodosNumeros();
 void testeMudarTamanhoEstrutura();
-// void testeListaEncadeada();
+void testeListaEncadeada();
 
 int main()
 {
@@ -26,7 +26,7 @@ int main()
   testeListar();
   testeRetornarTodosNumeros();
   testeMudarTamanhoEstrutura();
-  // testeListaEncadeada();
+  testeListaEncadeada();
   finalizar();
 }
 int ligado = 0;
@@ -257,127 +257,25 @@ void testeMudarTamanhoEstrutura()
 5 [1,34,12,6,27,-6, , , , ]
 */
 
-// void testeListaEncadeada()
-// {
-//     show_log("testeListaEncadeada()");
-//     int vet[10];
-//     No *inicio = montarListaEncadeadaComCabecote();
-//     getDadosListaEncadeadaComCabecote(inicio, vet);
-
-//     printf("%d\n", vet[0] == 3);
-//     printf("%d\n", vet[1] == 4);
-//     printf("%d\n", vet[2] == -2);
-//     printf("%d\n", vet[3] == 6);
-//     printf("%d\n", vet[4] == 1);
-//     printf("%d\n", vet[5] == 34);
-//     printf("%d\n", vet[6] == 12);
-//     printf("%d\n", vet[7] == 6);
-//     printf("%d\n", vet[8] == 27);
-//     printf("%d\n", vet[9] == -6);
-
-//     destruirListaEncadeadaComCabecote(&inicio);
-
-//     printf("%d\n", inicio == NULL);
-// }
-
-void testesAdicionaisDeContorno()
+void testeListaEncadeada()
 {
-  show_log("testesAdicionaisDeContorno()");
-  
-  // =========================================================================
-  // TESTE 1: Excluir número específico de estrutura que existe mas está VAZIA
-  // =========================================================================
-  printf("%d\n", criarEstruturaAuxiliar(3, 5) == SUCESSO);
-  // Posição 3 existe mas não tem números alocados ainda
-  printf("%d\n", excluirNumeroEspecificoDeEstrutura(3, 99) == ESTRUTURA_AUXILIAR_VAZIA);
-  
-  // =========================================================================
-  // TESTE 2: Garantir que a exclusão específica mantém a ordem original 
-  // (Deslocamento correto para a esquerda dos números subsequentes)
-  // =========================================================================
-  printf("%d\n", inserirNumeroEmEstrutura(3, 10) == SUCESSO);
-  printf("%d\n", inserirNumeroEmEstrutura(3, 20) == SUCESSO);
-  printf("%d\n", inserirNumeroEmEstrutura(3, 30) == SUCESSO); // [10, 20, 30]
-  
-  // Remove o elemento do meio (20)
-  printf("%d\n", excluirNumeroEspecificoDeEstrutura(3, 20) == SUCESSO); // Deve virar [10, 30]
-  
-  int vetDeslocamento[2];
-  printf("%d\n", getDadosEstruturaAuxiliar(3, vetDeslocamento) == SUCESSO);
-  printf("%d\n", vetDeslocamento[0] == 10);
-  printf("%d\n", vetDeslocamento[1] == 30); // Se o 30 não foi trazido para a esquerda, o teste falha
-  
-  // Limpa para os próximos testes
-  excluirNumeroDoFinaldaEstrutura(3);
-  excluirNumeroDoFinaldaEstrutura(3);
+  show_log("testeListaEncadeada()");
+  int vet[10];
+  No *inicio = montarListaEncadeadaComCabecote();
+  getDadosListaEncadeadaComCabecote(inicio, vet);
 
-  // =========================================================================
-  // TESTE 3: Excluir número específico duplicado (Deve remover APENAS a primeira ocorrência)
-  // =========================================================================
-  printf("%d\n", inserirNumeroEmEstrutura(3, 50) == SUCESSO);
-  printf("%d\n", inserirNumeroEmEstrutura(3, 99) == SUCESSO);
-  printf("%d\n", inserirNumeroEmEstrutura(3, 50) == SUCESSO); // Lista: [50, 99, 50]
-  
-  printf("%d\n", excluirNumeroEspecificoDeEstrutura(3, 50) == SUCESSO); // Deve remover o primeiro, ficando [99, 50]
-  
-  int vetDuplicados[2];
-  printf("%d\n", getDadosEstruturaAuxiliar(3, vetDuplicados) == SUCESSO);
-  printf("%d\n", vetDuplicados[0] == 99);
-  printf("%d\n", vetDuplicados[1] == 50); // O segundo '50' precisa continuar intacto ali!
-  
-  // Limpa para os próximos testes
-  excluirNumeroDoFinaldaEstrutura(3);
-  excluirNumeroDoFinaldaEstrutura(3);
+  printf("%d\n", vet[0] == 3);
+  printf("%d\n", vet[1] == 4);
+  printf("%d\n", vet[2] == -2);
+  printf("%d\n", vet[3] == 6);
+  printf("%d\n", vet[4] == 1);
+  printf("%d\n", vet[5] == 34);
+  printf("%d\n", vet[6] == 12);
+  printf("%d\n", vet[7] == 6);
+  printf("%d\n", vet[8] == 27);
+  printf("%d\n", vet[9] == -6);
 
-  // =========================================================================
-  // TESTE 4: Modificar tamanho diminuindo estrutura além da quantidade de dados atual
-  // Exemplo do PDF: "Sendo que o tamanho final resultante (x + n) deve ser sempre >= 1"
-  // E se tentarmos diminuir abaixo de 1? Deve retornar erro.
-  // =========================================================================
-  // Estrutura 3 atual tem tamanho total 5 (criada no início com tamanho 5)
-  // Tentar tirar 5 espaços resultaria em tamanho total 0. Deve falhar!
-  printf("%d\n", modificarTamanhoEstruturaAuxiliar(3, -5) == NOVO_TAMANHO_INVALIDO);
-  // Tentar tirar 6 espaços resultaria em tamanho negativo. Deve falhar!
-  printf("%d\n", modificarTamanhoEstruturaAuxiliar(3, -6) == NOVO_TAMANHO_INVALIDO);
-  
-  // =========================================================================
-  // TESTE 5: O que acontece se tentarmos diminuir o tamanho total da estrutura
-  // para um valor menor do que a quantidade de elementos que já estão dentro dela?
-  // Exemplo: Estrutura tem 3 elementos inseridos. Reduzir o tamanho dela para caber apenas 2.
-  // Regra padrão: A estrutura deve truncar os elementos que sobrarem ou impedir. 
-  // Na maioria das especificações, ela ajusta a quantidade atual para o novo teto.
-  // =========================================================================
-  printf("%d\n", inserirNumeroEmEstrutura(3, 11) == SUCESSO);
-  printf("%d\n", inserirNumeroEmEstrutura(3, 22) == SUCESSO);
-  printf("%d\n", inserirNumeroEmEstrutura(3, 33) == SUCESSO); // [11, 22, 33] (tamanho total atual: 5)
-  
-  // Vamos reduzir em -3 espaços. Novo tamanho total será: 5 - 3 = 2.
-  // Como ela tinha 3 elementos, o elemento '33' deve ser descartado e qtdAtual vira 2.
-  printf("%d\n", modificarTamanhoEstruturaAuxiliar(3, -3) == SUCESSO);
-  printf("%d\n", getQuantidadeElementosEstruturaAuxiliar(3) == 2); 
-  
-  int vetTruncado[2];
-  printf("%d\n", getDadosEstruturaAuxiliar(3, vetTruncado) == SUCESSO);
-  printf("%d\n", vetTruncado[0] == 11);
-  printf("%d\n", vetTruncado[1] == 22);
-  
-  // Tentar inserir um novo elemento agora deve dar SEM_ESPACO, pois o novo tamanho máximo virou 2!
-  printf("%d\n", inserirNumeroEmEstrutura(3, 44) == SEM_ESPACO);
+  destruirListaEncadeadaComCabecote(&inicio);
 
-  // =========================================================================
-  // TESTE 6: Validação de retornos vazios em listagens globais unificadas
-  // =========================================================================
-  // Vamos limpar o que resta da estrutura 3 e da estrutura 2 (usada nos testes anteriores)
-  excluirNumeroDoFinaldaEstrutura(3);
-  excluirNumeroDoFinaldaEstrutura(3); // Estrutura 3 zerada de elementos
-  
-  // (Caso seu teste anterior tenha deixado lixo na posição 2 ou 5, limpamos para garantir)
-  while(getQuantidadeElementosEstruturaAuxiliar(2) > 0) excluirNumeroDoFinaldaEstrutura(2);
-  while(getQuantidadeElementosEstruturaAuxiliar(5) > 0) excluirNumeroDoFinaldaEstrutura(5);
-  while(getQuantidadeElementosEstruturaAuxiliar(9) > 0) excluirNumeroDoFinaldaEstrutura(9);
-
-  // Agora que todas as estruturas auxiliares criadas (2, 3, 5, 9) estão Completamente Vazias:
-  int vetGeralVazio[1];
-  printf("%d\n", getDadosDeTodasEstruturasAuxiliares(vetGeralVazio) == TODAS_ESTRUTURAS_AUXILIARES_VAZIAS);
-  printf("%d\n", getDadosOrdenadosDeTodasEstruturasAuxiliares(vetGeralVazio) == TODAS_ESTRUTURAS_AUXILIARES_VAZIAS);
+  printf("%d\n", inicio == NULL);
 }
